@@ -54,14 +54,20 @@ module Plivo
                 rescue => e
                     response = e
                 end
-                if not response
-                    code = r.code
-                    raw = r.to_str
-                    response = JSON.parse(raw)
-                else
-                    code = response.http_code
-                    response = JSON.parse(response.response.to_s)
+
+                begin
+                  if not response
+                      code = r.code
+                      raw = r.to_str
+                      response = JSON.parse(raw)
+                  else
+                      code = response.http_code
+                      response = JSON.parse(response.response.to_s)
+                  end
+                rescue => e
+                  return [code, r&.to_str || '']
                 end
+
                 return [code, response]
             elsif method == "GET"
                 if params
@@ -73,14 +79,20 @@ module Plivo
                 rescue => e
                     response = e
                 end
-                if not response
-                    code = r.code
-                    raw = r.to_str
-                    response = JSON.parse(raw)
-                else
-                    code = response.http_code
-                    response = JSON.parse(response.response.to_s)
+
+                begin
+                  if not response
+                      code = r.code
+                      raw = r.to_str
+                      response = JSON.parse(raw)
+                  else
+                      code = response.http_code
+                      response = JSON.parse(response.response.to_s)
+                  end
+                rescue => e
+                  return [code, r&.to_str || '']
                 end
+
                 return [code, response]
             elsif method == "DELETE"
                 if params
@@ -91,12 +103,18 @@ module Plivo
                 rescue => e
                     response = e
                 end
-                if not response
-                    code = r.code
-                else
-                    code = response.http_code
-                    response = JSON.parse(response.response.to_s)
+
+                begin
+                  if not response
+                      code = r.code
+                  else
+                      code = response.http_code
+                      response = JSON.parse(response.response.to_s)
+                  end
+                rescue => e
+                  return [code, r&.to_str || '']
                 end
+
                 return [code, ""]
             end
             return [405, 'Method Not Supported']
